@@ -28,8 +28,10 @@ class Conductor : ObservableObject{
     /// limiter to prevent excessive volume at the output - just in case, it's the music producer in me :)
     let outputLimiter : PeakLimiter
     
+    let filter : LowPassFilter
+    
     /// bin amplitude values (range from 0.0 to 1.0)
-    @Published var amplitudes : [Double] = Array(repeating: 0.5, count: 50)
+    //@Published var amplitudes : [Double] = Array(repeating: 0.5, count: 50)
     
     init(){
         guard let input = engine.input else {
@@ -39,8 +41,8 @@ class Conductor : ObservableObject{
         // setup mic
         mic = input
         micMixer = Mixer(mic)
-        silentMixer = Mixer(micMixer)
-        silentMixer.volume = 0.0
+        filter = LowPassFilter(micMixer)
+        silentMixer = Mixer(filter)
         
         // route the silent Mixer to the limiter (you must always route the audio chain to AudioKit.output)
         outputLimiter = PeakLimiter(silentMixer)
@@ -55,5 +57,9 @@ class Conductor : ObservableObject{
         catch{
             assert(false, error.localizedDescription)
         }
+
+        filter.start()
+        silentMixer.volume = 0.0
+        
     }
 }
