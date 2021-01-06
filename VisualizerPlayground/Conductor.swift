@@ -19,6 +19,8 @@ class Conductor : ObservableObject{
     /// default microphone
     var mic: AudioEngine.InputNode
     
+    //var osc: Oscillator
+    
     /// mixing node for microphone input - routes to plotting and recording paths
     let micMixer : Mixer
     
@@ -33,6 +35,8 @@ class Conductor : ObservableObject{
     /// bin amplitude values (range from 0.0 to 1.0)
     //@Published var amplitudes : [Double] = Array(repeating: 0.5, count: 50)
     
+    var fft : FFTModel2!
+    
     init(){
         guard let input = engine.input else {
             fatalError()
@@ -41,6 +45,9 @@ class Conductor : ObservableObject{
         // setup mic
         mic = input
         micMixer = Mixer(mic)
+        
+        /*osc = Oscillator(waveform: Table(.sawtooth))
+        micMixer = Mixer(osc)*/
         filter = LowPassFilter(micMixer)
         silentMixer = Mixer(filter)
         
@@ -53,13 +60,19 @@ class Conductor : ObservableObject{
         //START AUDIOKIT
         do{
             try engine.start()
+            filter.start()
+            //osc.start()
         }
         catch{
             assert(false, error.localizedDescription)
         }
-
-        filter.start()
-        silentMixer.volume = 0.0
         
+        
+        /*osc.amplitude = 0.2
+        osc.frequency = 1000
+        osc.play()*/
+        //silentMixer.volume = 0.0
+        fft = FFTModel2(filter)
+        filter.cutoffFrequency = 20_000
     }
 }

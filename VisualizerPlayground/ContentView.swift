@@ -8,43 +8,69 @@
 import SwiftUI
 import AudioKitUI
 
+struct StylizedFFTView: View {
+    @EnvironmentObject var conductor: Conductor
+    @State var includeCaps = true
+    @State var currentGradient = 0
+    @State var colorGradients : [Gradient] = [Gradient(colors: [.red, .yellow, .green]),
+                                              Gradient(colors: [Color.init(hex: "D16BA5"), Color.init(hex: "86A8E7"), Color.init(hex: "5FFBF1")]),
+                                              Gradient(colors: [Color.init(hex: "d902ee"), Color.init(hex: "F4AF1B"), Color.init(hex: "F2BC94")])]
+    var body: some View {
+        FFTView(conductor.filter, linearGradient: LinearGradient(gradient: colorGradients[currentGradient], startPoint: .top, endPoint: .center) ,includeCaps: includeCaps)
+            .onTapGesture {
+                withAnimation{
+                    if currentGradient + 1 < colorGradients.count{
+                        currentGradient += 1
+                    } else {
+                        currentGradient = 0
+                    }
+                    includeCaps.toggle()
+                }
+            }
+    }
+}
+
+
+
 struct ContentView: View {
     @EnvironmentObject var conductor: Conductor
-    
     @State var includeCaps = true
     @State var currentGradient = 0
     @State var colorGradients : [Gradient] = [Gradient(colors: [.red, .yellow, .green]),
                                               Gradient(colors: [Color.init(hex: "D16BA5"), Color.init(hex: "86A8E7"), Color.init(hex: "5FFBF1")]),
                                               Gradient(colors: [Color.init(hex: "d902ee"), Color.init(hex: "F4AF1B"), Color.init(hex: "F2BC94")])]
     
-    @State var filterLowPassPercentage : Double = 1.0
+    @State var filterLowPassPercentage : Float = 1.0
     
     var body: some View {
-        ZStack{
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-            FFTView(conductor.micMixer, linearGradient: LinearGradient(gradient: colorGradients[currentGradient], startPoint: .top, endPoint: .center) ,includeCaps: includeCaps)
-                .onTapGesture {
-                    withAnimation{
-                        if currentGradient + 1 < colorGradients.count{
-                            currentGradient += 1
-                        } else {
-                            currentGradient = 0
-                        }
-                        includeCaps.toggle()
-                    }
-                }
-        }
-        Slider(value: $filterLowPassPercentage, in: 0...1.0)
-            .onChange(of: filterLowPassPercentage, perform: { value in
-                conductor.filter.cutoffFrequency = Float(20_000 * value)
-                print(conductor.filter.cutoffFrequency)
-            })
-        /*VStack{
+        
+        return VStack{
+            /*ZStack{
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                FFTView(conductor.filter)
+            }*/
             SpectrumView(conductor.filter)
-            Slider(value: $conductor.filterCutoffFrequency, in: 0...1_000.0)
-        }*/
+        
+            Slider(value: $filterLowPassPercentage, in: 0.0...1.0, step: 0.0001)
+                .onChange(of: filterLowPassPercentage, perform: { value in
+                    conductor.filter.cutoffFrequency = Float(20_000.0 * value)
+                    print(conductor.filter.cutoffFrequency)
+                })
+        }
     }
+    
+    /*func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
+        let logN = log10(n)
+        let logStart1 = log10(start1)
+        let logStop1 = log10(stop1)
+        let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
+        if(result.isNaN){
+            return 0.1
+        } else {
+            return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
+        }
+    }*/
 }
 
 struct ContentView_Previews: PreviewProvider {
