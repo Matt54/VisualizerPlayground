@@ -68,10 +68,10 @@ class Conductor : ObservableObject{
         }
         
         
-        /*osc.amplitude = 0.2
-        osc.frequency = 1000
+        /*osc.amplitude = 0.5
+        osc.frequency = 500
         osc.play()*/
-        //silentMixer.volume = 0.0
+        silentMixer.volume = 0.0
         fft = FFTModel2(filter)
         filter.cutoffFrequency = 20_000
     }
