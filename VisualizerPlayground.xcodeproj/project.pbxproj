@@ -7,24 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F5E03C225AD455C00113186 /* track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F5E03C125AD455C00113186 /* track.mp3 */; };
+		4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */; };
+		4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1F0C925A26AA300EE1C00 /* AudioKitUI */; };
 		4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */; };
 		4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E42A259BFEF20024E8C8 /* ContentView.swift */; };
 		4FD1E42D259BFEF30024E8C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */; };
 		4FD1E430259BFEF30024E8C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD1E42F259BFEF30024E8C8 /* Preview Assets.xcassets */; };
-		4FD1E43A259BFF2D0024E8C8 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD1E439259BFF2D0024E8C8 /* AudioKit */; };
-		4FD1E43D259BFF3E0024E8C8 /* FFTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E43C259BFF3E0024E8C8 /* FFTView.swift */; };
+		4FD1E43D259BFF3E0024E8C8 /* myFFTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */; };
 		4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E43F259C03700024E8C8 /* Conductor.swift */; };
+		4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */; };
+		4FEDB5E725A2394100755BE5 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FEDB5E625A2394100755BE5 /* AudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F5E03C125AD455C00113186 /* track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = track.mp3; sourceTree = "<group>"; };
+		4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTViewWrapper.swift; sourceTree = "<group>"; };
 		4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualizerPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPlaygroundApp.swift; sourceTree = "<group>"; };
 		4FD1E42A259BFEF20024E8C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FD1E42F259BFEF30024E8C8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4FD1E431259BFEF30024E8C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4FD1E43C259BFF3E0024E8C8 /* FFTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTView.swift; sourceTree = "<group>"; };
+		4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myFFTView.swift; sourceTree = "<group>"; };
 		4FD1E43F259C03700024E8C8 /* Conductor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conductor.swift; sourceTree = "<group>"; };
+		4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,7 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FD1E43A259BFF2D0024E8C8 /* AudioKit in Frameworks */,
+				4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */,
+				4FEDB5E725A2394100755BE5 /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,13 +66,16 @@
 		4FD1E427259BFEF20024E8C8 /* VisualizerPlayground */ = {
 			isa = PBXGroup;
 			children = (
+				4F5E03C125AD455C00113186 /* track.mp3 */,
 				4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */,
+				4FD1E43F259C03700024E8C8 /* Conductor.swift */,
 				4FD1E42A259BFEF20024E8C8 /* ContentView.swift */,
-				4FD1E43C259BFF3E0024E8C8 /* FFTView.swift */,
+				4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */,
+				4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */,
+				4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */,
 				4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */,
 				4FD1E431259BFEF30024E8C8 /* Info.plist */,
 				4FD1E42E259BFEF30024E8C8 /* Preview Content */,
-				4FD1E43F259C03700024E8C8 /* Conductor.swift */,
 			);
 			path = VisualizerPlayground;
 			sourceTree = "<group>";
@@ -94,7 +105,8 @@
 			);
 			name = VisualizerPlayground;
 			packageProductDependencies = (
-				4FD1E439259BFF2D0024E8C8 /* AudioKit */,
+				4FEDB5E625A2394100755BE5 /* AudioKit */,
+				4FA1F0C925A26AA300EE1C00 /* AudioKitUI */,
 			);
 			productName = VisualizerPlayground;
 			productReference = 4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */;
@@ -124,7 +136,8 @@
 			);
 			mainGroup = 4FD1E41C259BFEF20024E8C8;
 			packageReferences = (
-				4FD1E438259BFF2D0024E8C8 /* XCRemoteSwiftPackageReference "AudioKit" */,
+				4FEDB5E525A2394100755BE5 /* XCRemoteSwiftPackageReference "AudioKit" */,
+				4FA1F0C825A26AA300EE1C00 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
 			);
 			productRefGroup = 4FD1E426259BFEF20024E8C8 /* Products */;
 			projectDirPath = "";
@@ -142,6 +155,7 @@
 			files = (
 				4FD1E430259BFEF30024E8C8 /* Preview Assets.xcassets in Resources */,
 				4FD1E42D259BFEF30024E8C8 /* Assets.xcassets in Resources */,
+				4F5E03C225AD455C00113186 /* track.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,8 +166,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FD1E43D259BFF3E0024E8C8 /* FFTView.swift in Sources */,
+				4FD1E43D259BFF3E0024E8C8 /* myFFTView.swift in Sources */,
+				4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */,
 				4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */,
+				4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */,
 				4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */,
 				4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */,
 			);
@@ -346,20 +362,33 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4FD1E438259BFF2D0024E8C8 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+		4FA1F0C825A26AA300EE1C00 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		4FEDB5E525A2394100755BE5 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
 			requirement = {
-				branch = "v5-main";
+				branch = "v5-develop";
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4FD1E439259BFF2D0024E8C8 /* AudioKit */ = {
+		4FA1F0C925A26AA300EE1C00 /* AudioKitUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4FD1E438259BFF2D0024E8C8 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			package = 4FA1F0C825A26AA300EE1C00 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
+			productName = AudioKitUI;
+		};
+		4FEDB5E625A2394100755BE5 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FEDB5E525A2394100755BE5 /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
