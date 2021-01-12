@@ -65,28 +65,33 @@ struct ContentView: View {
                     }
             }*/
 
-            SpectrumView(conductor.filter)
+            SpectrumView(node: conductor.filter)
         
-            /*Slider(value: $filterLowPassPercentage, in: 0.0...1.0, step: 0.0001)
+            Text("Low Pass Filter Cutoff = \(conductor.filter.cutoffFrequency, specifier: "%.0f") Hz.")
+            Slider(value: $filterLowPassPercentage, in: 0.0...1.0, step: 0.0001)
                 .onChange(of: filterLowPassPercentage, perform: { value in
-                    conductor.filter.cutoffFrequency = Float(20_000.0 * value)
-                    print(conductor.filter.cutoffFrequency)
-                })*/
+                    conductor.filter.cutoffFrequency = Float(logSlider(position: value))
+                    //print(conductor.filter.cutoffFrequency)
+                })
             
         }
     }
     
-    /*func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
-        let logN = log10(n)
-        let logStart1 = log10(start1)
-        let logStop1 = log10(stop1)
-        let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-        if(result.isNaN){
-            return 0.1
-        } else {
-            return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-        }
-    }*/
+    func logSlider(position: Float) -> Double {
+        // position will be between 0 and 1.0
+        let minp = 0.0;
+        let maxp = 1.0;
+
+        // The result should be between 30.0 an 20000.0
+        let minv = log(30.0);
+        let maxv = log(20000.0);
+
+        // calculate adjustment factor
+        let scale = (maxv-minv) / Double(maxp-minp);
+
+        return exp(minv + scale*(Double(position)-minp));
+    }
+
 }
 
 struct ContentView_Previews: PreviewProvider {

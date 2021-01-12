@@ -8,12 +8,12 @@ class SpectrumModel: ObservableObject {
     
     @Published var amplitudes: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
     @Published var frequencies: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
-    //@Published var fftDataPoints: [CGPoint] = Array(repeating: CGPoint(x: 0.0, y: 0.0), count: numberOfPoints)
     
     var nodeTap: FFTTap!
     private var FFT_SIZE = 2048
     let sampleRate : double_t = 44100
     var node: Node?
+    
     var minDeadBand: CGFloat = 40.0
     var maxDeadBand: CGFloat = 40.0
     var currentMidAmp: CGFloat = 100.0
@@ -26,14 +26,14 @@ class SpectrumModel: ObservableObject {
     var topAmp: CGFloat = -60.0
     var bottomAmp: CGFloat = -216.0
     var ampDisplacement: CGFloat = 120.0 / 2.0
+    let maxSpan: CGFloat = 200
     
     func updateNode(_ node: Node) {
         if node !== self.node {
             self.node = node
             nodeTap = FFTTap(node,bufferSize: UInt32(FFT_SIZE*2)) { fftData in
                 DispatchQueue.main.async {
-                    //self.updateAmplitudes(Array(fftData.prefix(SpectrumModel.numberOfPoints*2)))
-                    self.updateAmplitudes(fftData)
+                    self.pushData(fftData)
                 }
             }
             nodeTap.isNormalized = false
@@ -43,20 +43,21 @@ class SpectrumModel: ObservableObject {
         }
     }
     
-    func updateAmplitudes(_ fftFloats: [Float]) {
+    func pushData(_ fftFloats: [Float]) {
         
-        // I don't love creating this extra array
+        // validate data
+        // extra array necessary?
         var fftData = fftFloats
         for index in 0..<fftData.count {
             if fftData[index].isNaN { fftData[index] = 0.0 }
         }
         
-        captureData(fftData)
- 
+        captureAmplitudeFrequencyData(fftData)
+        determineAmplitudeBounds()
     }
     
     /// Returns frequency, amplitude pairs after removing unwanted data points (there are simply too many in the high frequencies)
-    func captureData(_ fftFloats: [Float]){
+    func captureAmplitudeFrequencyData(_ fftFloats: [Float]){
         
         // I don't love making these extra arrays
         let real = fftFloats.indices.compactMap{$0 % 2 == 0 ? fftFloats[$0] : nil }
@@ -112,7 +113,6 @@ class SpectrumModel: ObservableObject {
             }
             
             let amplitude = Double(10 * log10(4 * (squared)/(Float(FFT_SIZE) * Float(FFT_SIZE))))
-            //let amplitude = Double(10 * log10(4 * (real[i] * real[i] + imaginary[i] * imaginary[i])/(Float(FFT_SIZE) * Float(FFT_SIZE))))
 
             if amplitude > maxAmplitude {
                 maxAmplitude = amplitude
@@ -128,34 +128,42 @@ class SpectrumModel: ObservableObject {
         frequencies = tempFrequencies
         minAmp = CGFloat(minAmplitude)
         maxAmp = CGFloat(maxAmplitude)
-        
+    }
+    
+    /// Figures out what we should use for the maximum and minimum amplitudes displayed - also sets a "mid" amp which the dead band lies around
+    func determineAmplitudeBounds(){
         if maxDeadBand < abs(maxAmp - currentMidAmp) ||  minDeadBand < abs(maxAmp - currentMidAmp) {
             // place us at a new location
             if abs(maxAmp) < ampDisplacement {
                 currentMidAmp = -ampDisplacement
             } else {
-                currentMidAmp = maxAmp// - minDeadBand
+                currentMidAmp = maxAmp
             }
             topAmp = currentMidAmp + ampDisplacement
             bottomAmp = currentMidAmp - ampDisplacement
             if bottomAmp > minAmp {
-                bottomAmp = minAmp
+                if topAmp - minAmp > maxSpan {
+                    bottomAmp = topAmp - maxSpan
+                } else {
+                    bottomAmp = minAmp
+                }
             }
         }
-
-        
-        
     }
 
 }
 
 struct SpectrumView: View {
     @StateObject var spectrum = SpectrumModel()
-    private var node: Node
+    var node: Node
     
-    public init(_ node: Node) {
-        self.node = node
-    }
+    @State var shouldPlotPoints: Bool = false
+    @State var shouldStroke: Bool = true
+    @State var shouldFill: Bool = true
+    
+    @State var plotPointColor: Color = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8)
+    @State var strokeColor: Color = Color.white
+    @State var fillColor: Color = Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.4)
     
     public var body: some View {
         GeometryReader{ geometry in
@@ -171,15 +179,19 @@ struct SpectrumView: View {
         return ZStack{
             Color.black
             createHorizontalAxis(width: width, height: height)
-            createVerticalAxis(width: width, height: height)//, minAmp: minY, maxAmp: maxY)
-            createSpectrum(width: width, height: height)//, minAmp: minY, maxAmp: maxY, frequencies: spectrum.frequencies, amplitudes: spectrum.amplitudes)
+            createVerticalAxis(width: width, height: height)
+            
+            if shouldPlotPoints {
+                createSpectrumCircles(width: width, height: height)
+            }
+            
+            if shouldStroke || shouldFill {
+                createSpectrumShape(width: width, height: height)
+            }
         }
     }
     
     func createHorizontalAxis(width: CGFloat, height: CGFloat) -> some View{
-        
-        //let maxFreq = 20000.0
-        //let minFreq = 10.0
         let freqs = [100.0,1000.0,10000.0]
         let freqStrings = ["100","1k","10k"]
         
@@ -231,59 +243,42 @@ struct SpectrumView: View {
                         .stroke(Color(red: 1.0, green: 1.0, blue: 1.0, opacity: 0.4))
                         .animation(.easeInOut(duration: 0.2))
                     
-                    /*Path{ path in
-                        path.move(to: CGPoint(x: 0.0,y: mappedAxisLocations[i] * height))
-                        path.addLine(to: CGPoint(x: width, y: mappedAxisLocations[i] * height))
-                    }
-                    .stroke(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8))*/
-                    
                     let labelString = String(Int(axisLocations[i]))
                     Text(labelString)
                         .position(x: width * 0.03, y: mappedAxisLocations[i] * height - height * 0.03)
                         .animation(.easeInOut(duration: 0.2))
                         .font(.footnote)
                         .foregroundColor(.white)
-                        //.background(Color.black)
                 }
             }
         }
     }
     
-    func createSpectrum(width: CGFloat, height: CGFloat) -> some View {
+    func createSpectrumCircles(width: CGFloat, height: CGFloat) -> some View {
         
-        /*let frequencies = spectrum.fftDataPoints.map(\.x)
-        let amplitudes = spectrum.fftDataPoints.map(\.y)
+        var mappedPoints = Array(repeating: CGPoint(x: 0.0, y: 0.0), count: SpectrumModel.numberOfPoints)
         
-        var maxAmp = amplitudes.max()! //+ 10.0//0.0 //spectrum.amplitudes.max()! + 10.0
-        var minAmp = amplitudes.min()!
-        //let span = maxAmp - minAmp
+        // I imagine this is not good computationally
+        for i in 0..<spectrum.amplitudes.count {
+            let mappedAmplitude = map(n: Double(spectrum.amplitudes[i]), start1: Double(spectrum.bottomAmp), stop1: Double(spectrum.topAmp), start2: 1.0, stop2: 0.0)
+            let mappedFrequency = logMap(n: Double(spectrum.frequencies[i]), start1: spectrum.minFreq, stop1: spectrum.maxFreq, start2: 0.0, stop2: 1.0)
+            mappedPoints[i] = CGPoint(x: mappedFrequency, y: mappedAmplitude)
+        }
         
-        // make sure we have enough room to fit
-        let ampHeight: CGFloat = 150.0
-        
-        let yDisplacement = ampHeight/2.0
-        
-        let midAmp = spectrum.currentMidAmp
-        
-        // place us at a new location if neccesary
-        if spectrum.maxDeadBand < abs(maxAmp - midAmp) {
-            if spectrum.minDeadBand < abs(minAmp - midAmp) {
-                if abs(maxAmp) < yDisplacement {
-                    spectrum.currentMidAmp = -yDisplacement
-                } else {
-                    spectrum.currentMidAmp = maxAmp - (spectrum.maxDeadBand - spectrum.minDeadBand)
+        return ZStack{
+            ForEach(1 ..< mappedPoints.count) {
+                if(mappedPoints[$0].x > 0.00001){
+                    Circle()
+                        .fill(plotPointColor)
+                        .frame(width: width * 0.005)
+                        .position(CGPoint(x: mappedPoints[$0].x * width, y: mappedPoints[$0].y * height))
+                        .animation(.easeInOut(duration: 0.1))
                 }
             }
         }
-
-        maxAmp = spectrum.currentMidAmp + yDisplacement
-        minAmp = spectrum.currentMidAmp - yDisplacement*/
-        
-        /*if(maxAmp - amplitudes.min()! < 190){
-            minAmp =  - 10.0
-        }*/
-        //let maxFreq = 20000.0
-        //let minFreq = 10.0
+    }
+    
+    func createSpectrumShape(width: CGFloat, height: CGFloat) -> some View {
         
         var mappedPoints = Array(repeating: CGPoint(x: 0.0, y: 0.0), count: SpectrumModel.numberOfPoints)
         var mappedIndexedDoubles: [Double] = Array(repeating: 0.0, count: SpectrumModel.numberOfPoints*2 + 4)
@@ -306,106 +301,19 @@ struct SpectrumView: View {
         mappedIndexedDoubles[SpectrumModel.numberOfPoints*2 - 1] = 1.0
         
         return ZStack{
-            
-            //createVerticalAxis(width: width, height: height, minAmp: minAmp, maxAmp: maxAmp)
-            
-            MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
-                .animation(.easeInOut(duration: 0.1))
-            
-            MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
-                .fill(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.4))
-                .animation(.easeInOut(duration: 0.1))
-
-            //stroke
-            /*Path{ path in
-                path.move(to: CGPoint(x: 0, y:  height))
-                
-                var i = 0
-                mappedPoints.forEach{ p in
-                    if(p.x > 0.00001){
-                        if(frequencies[i] > 1000){
-                            //if(i % 2 == 0){
-                                path.addLine(to: CGPoint(x: p.x * width, y: p.y * height))
-                            //}
-                        } else {
-                            path.addLine(to: CGPoint(x: p.x * width, y: p.y * height))
-                        }
-                    }
-                    else { // get the starting position on the y axis
-                        path.addLine(to: CGPoint(x: 0, y: p.y * height))
-                    }
-                    i += 1
-                }
-                //To bottom right
-                path.addLine(to: CGPoint(x: width, y: height))
-                
-                //To bottom Left
-                path.addLine(to: CGPoint(x: 0, y: height))
-                
-                //To first point
-                path.move(to: CGPoint(x: 0, y: height))
+            if shouldStroke {
+                MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
+                    .stroke(strokeColor, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                    .animation(.easeInOut(duration: 0.1))
             }
-            .stroke(Color.white, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))*/
             
-            //fill
-            /*Path{ path in
-                path.move(to: CGPoint(x: 0, y:  height))
-                
-                var i = 0
-                mappedPoints.forEach{ p in
-                    
-                    if(p.x > 0.00001){
-                        if(frequencies[i] > 1000){
-                            //if(i % 2 == 0){
-                                path.addLine(to: CGPoint(x: p.x * width, y: p.y * height))
-                            //}
-                        } else {
-                            path.addLine(to: CGPoint(x: p.x * width, y: p.y * height))
-                        }
-                    }
-                    else { // get the starting position on the y axis
-                        path.addLine(to: CGPoint(x: 0, y: p.y * height))
-                    }
-                    i += 1
-                }
-                
-                //To bottom right
-                path.addLine(to: CGPoint(x: width, y: height))
-                
-                //To bottom Left
-                path.addLine(to: CGPoint(x: 0, y: height))
-                
-                //To first point
-                path.move(to: CGPoint(x: 0, y: height))
+            if shouldFill {
+                MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
+                    .fill(fillColor)
+                    .animation(.easeInOut(duration: 0.1))
             }
-            .fill(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.4))*/
-            
-            //dots
-            /*ForEach(1 ..< mappedPoints.count) {
-                if(mappedPoints[$0].x > 0.00001){
-                    
-                    if(frequencies[$0] > 1000){
-                        //if($0 % 2 == 0){ // could show half as many above 1k Hz.
-                        Circle()
-                            .fill(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8))
-                            .frame(width: width * 0.005)
-                            .position(CGPoint(x: mappedPoints[$0].x * width, y: mappedPoints[$0].y * height))
-                            .animation(.easeInOut(duration: 0.15))
-                        //}
-                    } else {
-                        Circle()
-                            .fill(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8))
-                            .frame(width: width * 0.005)
-                            .position(CGPoint(x: mappedPoints[$0].x * width, y: mappedPoints[$0].y * height))
-                            .animation(.easeInOut(duration: 0.15))
-                    }
-                }
-            }*/
         }
     }
-    
-    
     
     func map(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
         return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
@@ -431,10 +339,11 @@ struct SpectrumView: View {
 
 struct SpectrumView_Previews: PreviewProvider {
     static var previews: some View {
-        SpectrumView(Mixer())
+        SpectrumView(node: Mixer())
     }
 }
 
+// MARK: HorizontalLineData
 struct HorizontalLineData{
     let locationData : [Double]
     
@@ -473,6 +382,7 @@ struct MorphableShape: Shape {
     }
 }
 
+// MARK: Path extension
 extension Path {
     // return point at the curve
     func point(at offset: CGFloat) -> CGPoint {

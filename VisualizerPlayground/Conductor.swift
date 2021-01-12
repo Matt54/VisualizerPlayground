@@ -6,6 +6,7 @@
 //
 
 import AudioKit
+import AVFoundation
 import Foundation
 
 class Conductor : ObservableObject{
@@ -21,6 +22,8 @@ class Conductor : ObservableObject{
     
     //var osc: Oscillator
     
+    var player: AudioPlayer
+    
     /// mixing node for microphone input - routes to plotting and recording paths
     let micMixer : Mixer
     
@@ -35,6 +38,8 @@ class Conductor : ObservableObject{
     /// bin amplitude values (range from 0.0 to 1.0)
     //@Published var amplitudes : [Double] = Array(repeating: 0.5, count: 50)
     
+    var file : AVAudioFile!
+    
     var fft : FFTModel2!
     
     init(){
@@ -46,9 +51,17 @@ class Conductor : ObservableObject{
         mic = input
         micMixer = Mixer(mic)
         
+        let url = URL(fileURLWithPath: Bundle.main.resourcePath! + "/track.mp3")
+        do{
+            file = try AVAudioFile(forReading: url)
+        } catch{
+            print("oh no!")
+        }
+        player = AudioPlayer(file: file)!
+        
         /*osc = Oscillator(waveform: Table(.sawtooth))
         micMixer = Mixer(osc)*/
-        filter = LowPassFilter(micMixer)
+        filter = LowPassFilter(player)
         silentMixer = Mixer(filter)
         
         // route the silent Mixer to the limiter (you must always route the audio chain to AudioKit.output)
@@ -59,8 +72,13 @@ class Conductor : ObservableObject{
         
         //START AUDIOKIT
         do{
+            //try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: .defaultToSpeaker)
+            //try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+            //try AudioKit.Settings.session.setCategory(.playAndRecord, options: .defaultToSpeaker)
             try engine.start()
+            //try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
             filter.start()
+            player.play()
             //osc.start()
         }
         catch{
@@ -71,8 +89,9 @@ class Conductor : ObservableObject{
         /*osc.amplitude = 0.5
         osc.frequency = 500
         osc.play()*/
-        silentMixer.volume = 0.0
+        //silentMixer.volume = 0.0
         fft = FFTModel2(filter)
         filter.cutoffFrequency = 20_000
+        filter.resonance = 10
     }
 }
