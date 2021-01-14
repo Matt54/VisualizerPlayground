@@ -46,7 +46,6 @@ struct ContentView: View {
     @State var numberOfBars = 75
     
     var body: some View {
-        
         return VStack{
             /*ZStack{
                 Color.black
@@ -69,8 +68,10 @@ struct ContentView: View {
         
             Text("Low Pass Filter Cutoff = \(conductor.filter.cutoffFrequency, specifier: "%.0f") Hz.")
             Slider(value: $filterLowPassPercentage, in: 0.0...1.0, step: 0.0001)
+                .accentColor(.green)
                 .onChange(of: filterLowPassPercentage, perform: { value in
                     conductor.filter.cutoffFrequency = Float(logSlider(position: value))
+                    //print("ContentView.swift isRunning: " + String(conductor.engine.avEngine.isRunning))
                     //print(conductor.filter.cutoffFrequency)
                 })
             

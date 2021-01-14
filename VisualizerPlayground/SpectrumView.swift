@@ -3,8 +3,9 @@
 import AudioKit
 import SwiftUI
 
+// MARK: SpectrumModel
 class SpectrumModel: ObservableObject {
-    static let numberOfPoints = 372
+    static let numberOfPoints = 210
     
     @Published var amplitudes: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
     @Published var frequencies: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
@@ -26,7 +27,7 @@ class SpectrumModel: ObservableObject {
     var topAmp: CGFloat = -60.0
     var bottomAmp: CGFloat = -216.0
     var ampDisplacement: CGFloat = 120.0 / 2.0
-    let maxSpan: CGFloat = 200
+    let maxSpan: CGFloat = 170
     
     func updateNode(_ node: Node) {
         if node !== self.node {
@@ -38,8 +39,6 @@ class SpectrumModel: ObservableObject {
             }
             nodeTap.isNormalized = false
             nodeTap.start()
-            print(nodeTap.bufferSize)
-            print(FFT_SIZE)
         }
     }
     
@@ -88,7 +87,7 @@ class SpectrumModel: ObservableObject {
                     maxSquared = squared
                     frequencyChosen = frequencyForBin
                 }
-                if i % 4 != 0 {
+                if i % 8 != 0 {
                     // take the greatest 1 in every 4 points when > 10k Hz.
                     continue
                 } else {
@@ -101,7 +100,7 @@ class SpectrumModel: ObservableObject {
                     maxSquared = squared
                     frequencyChosen = frequencyForBin
                 }
-                if i % 2 != 0 {
+                if i % 4 != 0 {
                     // take the greatest 1 in every 2 points when > 1k Hz.
                     continue
                 } else {
@@ -144,15 +143,18 @@ class SpectrumModel: ObservableObject {
             if bottomAmp > minAmp {
                 if topAmp - minAmp > maxSpan {
                     bottomAmp = topAmp - maxSpan
-                } else {
+                }
+                else {
                     bottomAmp = minAmp
                 }
             }
         }
+        
     }
 
 }
 
+// MARK: SpectrumView
 struct SpectrumView: View {
     @StateObject var spectrum = SpectrumModel()
     var node: Node
@@ -161,26 +163,90 @@ struct SpectrumView: View {
     @State var shouldStroke: Bool = true
     @State var shouldFill: Bool = true
     
+    @State var backgroundColor: Color = Color.purple
     @State var plotPointColor: Color = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8)
-    @State var strokeColor: Color = Color.white
-    @State var fillColor: Color = Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.4)
+    @State var strokeColor: Color = Color.green
+    @State var fillColor: Color = Color(red: 0.0, green: 0.5, blue: 0.0, opacity: 0.4)
+    @State var cursorColor = Color.green
+    
+    @State var frequencyDisplayed: Double = 100.0
+    @State var amplitudeDisplayed: Double = -100.0
+    
+    @State var cursorX: Float = 0.0
+    @State var cursorY: Float = 0.0
+    @State var popupX: Float = 0.0
+    @State var popupY: Float = 0.0
+    @State var popupOpacity: Double = 0.0
+    @State var cursorDisplayed: Bool = false
     
     public var body: some View {
         GeometryReader{ geometry in
-            calculateGraph(width: geometry.size.width, height: geometry.size.height)
+            createGraphView(width: geometry.size.width, height: geometry.size.height)
                 .drawingGroup()
                 .onAppear {
                     spectrum.updateNode(node)
                 }
+                .gesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged { value in
+                            var x: Float = Float(value.location.x > geometry.size.width ? geometry.size.width : 0.0)
+                            if value.location.x > 0.0 && value.location.x < geometry.size.width {
+                                x = Float(value.location.x)
+                            }
+                            var y: Float = Float(value.location.y > geometry.size.height ? geometry.size.height : 0.0)
+                            if value.location.y > 0.0 && value.location.y < geometry.size.height {
+                                y = Float(value.location.y)
+                            }
+                            
+                            cursorX = x
+                            cursorY = y
+                            
+                            popupX = x > Float(geometry.size.width / 6) ? x - Float(geometry.size.width / 16) : x + Float(geometry.size.width / 16)
+                            popupY = y > Float(geometry.size.height / 6) ? y - Float(geometry.size.width / 16) : y + Float(geometry.size.width / 16)
+                            
+                            //DispatchQueue.main.async {
+                            frequencyDisplayed = Double(expMap(n: x, start1: Float(0.0), stop1: Float(geometry.size.width), start2: Float(spectrum.minFreq), stop2: Float(spectrum.maxFreq)))
+                            //}
+                            amplitudeDisplayed = Double(map(n: CGFloat(y), start1: 0.0, stop1: geometry.size.height, start2: spectrum.topAmp, stop2: spectrum.bottomAmp))
+                            
+                            cursorDisplayed = true
+                            popupOpacity = 1.0
+                        }
+                        .onEnded{_ in
+                            popupOpacity = 0.0
+                        }
+                )
+            
+            if cursorDisplayed {
+                ZStack{
+                    CircleCursorView(cursorColor: cursorColor)
+                    //Circle()
+                        .frame(width: geometry.size.width / 30, height: geometry.size.height / 30)
+                        .position(x: CGFloat(cursorX), y: CGFloat(cursorY))
+                    
+                    SpectrumPopupView(frequency: $frequencyDisplayed, amplitude: $amplitudeDisplayed, colorForeground: cursorColor)
+                        .overlay(
+                                RoundedCorner(radius: 10.0, corners: [.allCorners])
+                                     .stroke(cursorColor)
+                                     .shadow(color: cursorColor, radius: 3, x: 0, y: 0)
+                        )
+                        .position(x: CGFloat(popupX), y: CGFloat(popupY))
+                }
+                .opacity(popupOpacity)
+                .animation(.default)
+                .drawingGroup()
+            }
+            
+            /*VStack {
+                Spacer()
+            }*/
         }
     }
     
-    func calculateGraph(width: CGFloat, height: CGFloat) -> some View {
+    private func createGraphView(width: CGFloat, height: CGFloat) -> some View {
         return ZStack{
-            Color.black
-            createHorizontalAxis(width: width, height: height)
-            createVerticalAxis(width: width, height: height)
-            
+            backgroundColor
+
             if shouldPlotPoints {
                 createSpectrumCircles(width: width, height: height)
             }
@@ -188,10 +254,14 @@ struct SpectrumView: View {
             if shouldStroke || shouldFill {
                 createSpectrumShape(width: width, height: height)
             }
+            
+            HorizontalAxis(minX: spectrum.minFreq, maxX: spectrum.maxFreq, isLogarithmicScale: true)
+            VerticalAxis(minY: $spectrum.bottomAmp, maxY: $spectrum.topAmp)
+            //createScrollingVerticalAxis(width: width, height: height)
         }
     }
     
-    func createHorizontalAxis(width: CGFloat, height: CGFloat) -> some View{
+    /*private func createHorizontalAxis(width: CGFloat, height: CGFloat) -> some View{
         let freqs = [100.0,1000.0,10000.0]
         let freqStrings = ["100","1k","10k"]
         
@@ -215,9 +285,9 @@ struct SpectrumView: View {
                     .position(x: mappedFreqs[i] * width + width * 0.02, y: height * 0.03)
             }
         }
-    }
+    }*/
     
-    func createVerticalAxis(width: CGFloat, height: CGFloat) -> some View {
+    /*private func createScrollingVerticalAxis(width: CGFloat, height: CGFloat) -> some View {
 
         var axisLocations: [CGFloat] = []
         for i in 1...20 {
@@ -252,7 +322,7 @@ struct SpectrumView: View {
                 }
             }
         }
-    }
+    }*/
     
     func createSpectrumCircles(width: CGFloat, height: CGFloat) -> some View {
         
@@ -314,36 +384,40 @@ struct SpectrumView: View {
             }
         }
     }
-    
-    func map(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
-        return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
-    }
-    
-    func map(n: CGFloat, start1: CGFloat, stop1: CGFloat, start2: CGFloat, stop2: CGFloat) -> CGFloat {
-        return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
-    }
-    
-    func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
-        let logN = log10(n)
-        let logStart1 = log10(start1)
-        let logStop1 = log10(stop1)
-        let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-        if(result.isNaN){
-            return 0.1
-        } else {
-            return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-        }
-    }
-    
 }
 
-struct SpectrumView_Previews: PreviewProvider {
-    static var previews: some View {
-        SpectrumView(node: Mixer())
+func map(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
+}
+
+func map(n: CGFloat, start1: CGFloat, stop1: CGFloat, start2: CGFloat, stop2: CGFloat) -> CGFloat {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
+}
+
+func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
+    let logN = log10(n)
+    let logStart1 = log10(start1)
+    let logStop1 = log10(stop1)
+    let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
+    if(result.isNaN){
+        return 0.1
+    } else {
+        return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
     }
 }
 
-// MARK: HorizontalLineData
+func expMap(n: Float, start1: Float, stop1: Float, start2: Float, stop2: Float) -> Float {
+
+    let logStart2 = log(start2);
+    let logStop2 = log(stop2);
+
+    // calculate adjustment factor
+    let scale = (logStop2-logStart2) / Float(stop1-start1);
+
+    return exp(logStart2 + scale*(Float(n)-start1));
+}
+
+// This packages the y locations in a convenient way for the MorphableShape struct
 struct HorizontalLineData{
     let locationData : [Double]
     
@@ -352,139 +426,135 @@ struct HorizontalLineData{
     }
 }
 
-// MARK: MorphableShape
-struct MorphableShape: Shape {
-    var controlPoints: AnimatableVector
+func calculateLocalCoordinateFraction(point: CGPoint, width: CGFloat, height: CGFloat) -> CGPoint {
+    return CGPoint(x: map(n: point.x, start1: 0.0, stop1: width, start2: 0.0, stop2: 1.0)
+                        , y: map(n: point.y, start1: 0.0, stop1: height, start2: 0.0, stop2: 1.0))
+}
+
+// MARK: HorizontalAxis
+struct HorizontalAxis: View {
     
-    var animatableData: AnimatableVector {
-        set { self.controlPoints = newValue }
-        get { return self.controlPoints }
-    }
+    @State var minX : Double = 30
+    @State var maxX : Double = 20_000
+    @State var isLogarithmicScale: Bool = true
     
-    func point(x: Double, y: Double, rect: CGRect) -> CGPoint {
-        // vector values are expected to by in the range of 0...1
-        return CGPoint(x: Double(rect.width)*x, y: Double(rect.height)*y)
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        return Path { path in
-            
-            path.move(to: self.point(x: self.controlPoints.values[0],
-                                     y: self.controlPoints.values[1], rect: rect))
-            
-            var i = 2;
-            while i < self.controlPoints.values.count-1 {
-                path.addLine(to:  self.point(x: self.controlPoints.values[i],
-                                             y: self.controlPoints.values[i+1], rect: rect))
-                i += 2;
+    public var body: some View {
+        
+        let verticalLineXLocations = [100.0,1000.0,10000.0]
+        let verticalLineLabels = ["100","1k","10k"]
+        
+        var verticalLineXLocationsMapped : [CGFloat] = Array(repeating: 0.0, count: verticalLineXLocations.count)
+        
+        if isLogarithmicScale {
+            for i in 0..<verticalLineXLocations.count {
+                verticalLineXLocationsMapped[i] = CGFloat(logMap(n: verticalLineXLocations[i], start1: minX, stop1: maxX, start2: 0.0, stop2: 1.0))
+            }
+        } else {
+            for i in 0..<verticalLineXLocations.count {
+                verticalLineXLocationsMapped[i] = CGFloat(map(n: verticalLineXLocations[i], start1: minX, stop1: maxX, start2: 0.0, stop2: 1.0))
+            }
+        }
+        
+        return ZStack{
+            GeometryReader{ geo in
+                ForEach(0 ..< verticalLineXLocationsMapped.count) {i in
+                    Path{ path in
+                        path.move(to: CGPoint(x: verticalLineXLocationsMapped[i] * geo.size.width, y: 0.0))
+                        path.addLine(to: CGPoint(x: verticalLineXLocationsMapped[i] * geo.size.width, y: geo.size.height))
+                    }
+                    .stroke(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8))
+
+                    Text(verticalLineLabels[i])
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                        .position(x: verticalLineXLocationsMapped[i] * geo.size.width + geo.size.width * 0.02, y: geo.size.height * 0.03)
+                }
             }
         }
     }
 }
 
-// MARK: Path extension
-extension Path {
-    // return point at the curve
-    func point(at offset: CGFloat) -> CGPoint {
-        let limitedOffset = min(max(offset, 0), 1)
-        guard limitedOffset > 0 else { return cgPath.currentPoint }
-        return trimmedPath(from: 0, to: limitedOffset).cgPath.currentPoint
+// MARK: VerticalAxis
+struct VerticalAxis: View {
+    
+    @Binding var minY : CGFloat
+    @Binding var maxY : CGFloat
+    
+    public var body: some View {
+        
+        var horizontalLineYLocations: [CGFloat] = []
+        for i in 1...20 {
+            let amp : CGFloat = CGFloat(i) * -12.0
+            if i % 2 != 0 {
+                horizontalLineYLocations.append(amp)
+            }
+        }
+        
+        var horizontalLineYLocationsMapped:[CGFloat] = Array(repeating: 0.0, count: horizontalLineYLocations.count)
+        var locationData : [HorizontalLineData] = []
+        
+        for i in 0..<horizontalLineYLocations.count {
+            horizontalLineYLocationsMapped[i] = map(n: horizontalLineYLocations[i], start1: minY, stop1: maxY, start2: 1.0, stop2: 0.0)
+            locationData.append(HorizontalLineData(yLoc: Double(horizontalLineYLocationsMapped[i])))
+        }
+        
+        return ZStack{
+            GeometryReader{ geo in
+                ForEach(0 ..< horizontalLineYLocationsMapped.count) {i in
+                    if horizontalLineYLocationsMapped[i] > 0.0 && horizontalLineYLocationsMapped[i] < 1.0 {
+                        
+                        MorphableShape(controlPoints: AnimatableVector(with: locationData[i].locationData))
+                            .stroke(Color(red: 1.0, green: 1.0, blue: 1.0, opacity: 0.4))
+                            .animation(.easeInOut(duration: 0.2))
+                        
+                        let labelString = String(Int(horizontalLineYLocations[i]))
+                        Text(labelString)
+                            .position(x: geo.size.width * 0.03, y: horizontalLineYLocationsMapped[i] * geo.size.height - geo.size.height * 0.03)
+                            .animation(.easeInOut(duration: 0.2))
+                            .font(.footnote)
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+        }
     }
     
-    // return control points along the path
-    func controlPoints(count: Int) -> AnimatableVector {
-        var retPoints = [Double]()
-        for index in 0..<count {
-            let pathOffset = Double(index)/Double(count)
-            let pathPoint = self.point(at: CGFloat(pathOffset))
-            retPoints.append(Double(pathPoint.x))
-            retPoints.append(Double(pathPoint.y))
+    // This packages the y locations in a convenient way for the MorphableShape struct
+    struct HorizontalLineData{
+        let locationData : [Double]
+        
+        init(yLoc: Double){
+            locationData = [0.0, yLoc, 1.0, yLoc]
         }
-        return AnimatableVector(with: retPoints)
+    }
+    
+}
+
+
+// MARK: SpectrumView_Previews
+struct SpectrumView_Previews: PreviewProvider {
+    static var previews: some View {
+        SpectrumView(node: Mixer())
     }
 }
 
-// MARK: AnimatableVector
-struct AnimatableVector: VectorArithmetic {
-    
-    var values: [Double] // vector values
-    
-    init(count: Int = 1) {
-        self.values = [Double](repeating: 0.0, count: count)
-        self.magnitudeSquared = 0.0
-    }
-    
-    init(with values: [Double]) {
-        self.values = values
-        self.magnitudeSquared = 0
-        self.recomputeMagnitude()
-    }
-    
-    func computeMagnitude()->Double {
-        // compute square magnitued of the vector
-        // = sum of all squared values
-        var sum: Double = 0.0
-        
-        for index in 0..<self.values.count {
-            sum += self.values[index]*self.values[index]
-        }
-        
-        return Double(sum)
-    }
-    
-    mutating func recomputeMagnitude(){
-        self.magnitudeSquared = self.computeMagnitude()
-    }
-    
-    // MARK: VectorArithmetic
-    var magnitudeSquared: Double // squared magnitude of the vector
-    
-    mutating func scale(by rhs: Double) {
-        // scale vector with a scalar
-        // = each value is multiplied by rhs
-        for index in 0..<values.count {
-            values[index] *= rhs
-        }
-        self.magnitudeSquared = self.computeMagnitude()
-    }
-    
-    // MARK: AdditiveArithmetic
-    
-    // zero is identity element for aditions
-    // = all values are zero
-    static var zero: AnimatableVector = AnimatableVector()
-    
-    static func + (lhs: AnimatableVector, rhs: AnimatableVector) -> AnimatableVector {
-        var retValues = [Double]()
-        
-        for index in 0..<min(lhs.values.count, rhs.values.count) {
-            retValues.append(lhs.values[index] + rhs.values[index])
-        }
-        
-        return AnimatableVector(with: retValues)
-    }
-    
-    static func += (lhs: inout AnimatableVector, rhs: AnimatableVector) {
-        for index in 0..<min(lhs.values.count,rhs.values.count)  {
-            lhs.values[index] += rhs.values[index]
-        }
-        lhs.recomputeMagnitude()
-    }
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+     }
+}
 
-    static func - (lhs: AnimatableVector, rhs: AnimatableVector) -> AnimatableVector {
-        var retValues = [Double]()
-        
-        for index in 0..<min(lhs.values.count, rhs.values.count) {
-            retValues.append(lhs.values[index] - rhs.values[index])
-        }
-        
-        return AnimatableVector(with: retValues)
-    }
-    
-    static func -= (lhs: inout AnimatableVector, rhs: AnimatableVector) {
-        for index in 0..<min(lhs.values.count,rhs.values.count)  {
-            lhs.values[index] -= rhs.values[index]
-        }
-        lhs.recomputeMagnitude()
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect,
+            byRoundingCorners: corners, cornerRadii: CGSize(width:
+            radius, height: radius))
+        return Path(path.cgPath)
     }
 }
+
+
+
+

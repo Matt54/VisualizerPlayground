@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F35535625AF724F001D8412 /* SpectrumPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35535525AF724F001D8412 /* SpectrumPopupView.swift */; };
+		4F35535925AFC877001D8412 /* CircleCursorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35535825AFC877001D8412 /* CircleCursorView.swift */; };
 		4F5E03C225AD455C00113186 /* track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F5E03C125AD455C00113186 /* track.mp3 */; };
+		4F6E705225AE830F003D9894 /* MorphableShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E705125AE830F003D9894 /* MorphableShape.swift */; };
 		4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */; };
 		4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1F0C925A26AA300EE1C00 /* AudioKitUI */; };
 		4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */; };
@@ -21,7 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F35535525AF724F001D8412 /* SpectrumPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumPopupView.swift; sourceTree = "<group>"; };
+		4F35535825AFC877001D8412 /* CircleCursorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCursorView.swift; sourceTree = "<group>"; };
 		4F5E03C125AD455C00113186 /* track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = track.mp3; sourceTree = "<group>"; };
+		4F6E705125AE830F003D9894 /* MorphableShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphableShape.swift; sourceTree = "<group>"; };
 		4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTViewWrapper.swift; sourceTree = "<group>"; };
 		4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualizerPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPlaygroundApp.swift; sourceTree = "<group>"; };
@@ -73,6 +79,9 @@
 				4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */,
 				4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */,
 				4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */,
+				4F35535825AFC877001D8412 /* CircleCursorView.swift */,
+				4F35535525AF724F001D8412 /* SpectrumPopupView.swift */,
+				4F6E705125AE830F003D9894 /* MorphableShape.swift */,
 				4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */,
 				4FD1E431259BFEF30024E8C8 /* Info.plist */,
 				4FD1E42E259BFEF30024E8C8 /* Preview Content */,
@@ -167,9 +176,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FD1E43D259BFF3E0024E8C8 /* myFFTView.swift in Sources */,
+				4F35535925AFC877001D8412 /* CircleCursorView.swift in Sources */,
 				4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */,
 				4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */,
 				4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */,
+				4F35535625AF724F001D8412 /* SpectrumPopupView.swift in Sources */,
+				4F6E705225AE830F003D9894 /* MorphableShape.swift in Sources */,
 				4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */,
 				4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */,
 			);

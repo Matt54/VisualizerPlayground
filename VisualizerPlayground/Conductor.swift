@@ -30,6 +30,8 @@ class Conductor : ObservableObject{
     /// mixer with no volume so that we don't output audio
     let silentMixer : Mixer
     
+    let combinationMixer : Mixer
+    
     /// limiter to prevent excessive volume at the output - just in case, it's the music producer in me :)
     let outputLimiter : PeakLimiter
     
@@ -42,7 +44,16 @@ class Conductor : ObservableObject{
     
     var fft : FFTModel2!
     
+    var sampleRate : Double = AudioKit.Settings.sampleRate
+    
     init(){
+        
+        do{
+            try AudioKit.Settings.session.setCategory(.playAndRecord, options: .defaultToSpeaker)
+        } catch{
+            assert(false, error.localizedDescription)
+        }
+        
         guard let input = engine.input else {
             fatalError()
         }
@@ -61,11 +72,16 @@ class Conductor : ObservableObject{
         
         /*osc = Oscillator(waveform: Table(.sawtooth))
         micMixer = Mixer(osc)*/
-        filter = LowPassFilter(player)
-        silentMixer = Mixer(filter)
+        silentMixer = Mixer(micMixer)
+        //silentMixer.addInput(micMixer)
+        
+        filter = LowPassFilter(silentMixer)
+        
+        combinationMixer = Mixer(filter)
+        combinationMixer.addInput(silentMixer)
         
         // route the silent Mixer to the limiter (you must always route the audio chain to AudioKit.output)
-        outputLimiter = PeakLimiter(silentMixer)
+        outputLimiter = PeakLimiter(combinationMixer)
         
         // set the limiter as the last node in our audio chain
         engine.output = outputLimiter
@@ -77,8 +93,12 @@ class Conductor : ObservableObject{
             //try AudioKit.Settings.session.setCategory(.playAndRecord, options: .defaultToSpeaker)
             try engine.start()
             //try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            print("conductor.swift isRunning: " + String(engine.avEngine.isRunning))
             filter.start()
-            player.play()
+            
+            //let startSampleFramePosition = player.playerNode.lastRenderTime?.sampleTime
+            //let avTime = AVAudioTime(sampleTime: startSampleFramePosition!, atRate: sampleRate)
+            //player.play()
             //osc.start()
         }
         catch{
@@ -89,7 +109,7 @@ class Conductor : ObservableObject{
         /*osc.amplitude = 0.5
         osc.frequency = 500
         osc.play()*/
-        //silentMixer.volume = 0.0
+        combinationMixer.volume = 0.0
         fft = FFTModel2(filter)
         filter.cutoffFrequency = 20_000
         filter.resonance = 10
