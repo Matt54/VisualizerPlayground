@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F1B20BF25B75B7C00635143 /* WavetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1B20BE25B75B7C00635143 /* WavetableView.swift */; };
+		4F22538725B48D1D00ED8A8D /* CustomOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22538625B48D1D00ED8A8D /* CustomOscillator.swift */; };
+		4F22538B25B4932200ED8A8D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F22538A25B4932200ED8A8D /* CustomOscillatorDSP.mm */; };
+		4F22539025B49D0300ED8A8D /* customosc.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F22538F25B49D0300ED8A8D /* customosc.c */; };
 		4F35535625AF724F001D8412 /* SpectrumPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35535525AF724F001D8412 /* SpectrumPopupView.swift */; };
 		4F35535925AFC877001D8412 /* CircleCursorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35535825AFC877001D8412 /* CircleCursorView.swift */; };
 		4F5E03C225AD455C00113186 /* track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F5E03C125AD455C00113186 /* track.mp3 */; };
 		4F6E705225AE830F003D9894 /* MorphableShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E705125AE830F003D9894 /* MorphableShape.swift */; };
 		4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */; };
 		4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1F0C925A26AA300EE1C00 /* AudioKitUI */; };
+		4FAB1D9725B28283005D0D15 /* AmplitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */; };
 		4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */; };
 		4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E42A259BFEF20024E8C8 /* ContentView.swift */; };
 		4FD1E42D259BFEF30024E8C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */; };
@@ -21,14 +26,27 @@
 		4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E43F259C03700024E8C8 /* Conductor.swift */; };
 		4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */; };
 		4FEDB5E725A2394100755BE5 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FEDB5E625A2394100755BE5 /* AudioKit */; };
+		FAAEBDF725BA9202009869A6 /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEBDF625BA9202009869A6 /* SpectrogramView.swift */; };
+		FAD8684425BF58BA002BE40B /* ColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8684325BF58BA002BE40B /* ColorHelpers.swift */; };
+		FAD8684E25BF7106002BE40B /* WavetableExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8684D25BF7106002BE40B /* WavetableExampleView.swift */; };
+		FAD8685425BF8197002BE40B /* AmplitudeExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8685325BF8197002BE40B /* AmplitudeExampleView.swift */; };
+		FAD8685925BF8272002BE40B /* FFTExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8685825BF8272002BE40B /* FFTExampleView.swift */; };
+		FAD8685F25BF838C002BE40B /* SpectrogramExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8685E25BF838C002BE40B /* SpectrogramExampleView.swift */; };
+		FAD8686525BF8662002BE40B /* SpectrumExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8686425BF8662002BE40B /* SpectrumExampleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1B20BE25B75B7C00635143 /* WavetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableView.swift; sourceTree = "<group>"; };
+		4F22538625B48D1D00ED8A8D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
+		4F22538A25B4932200ED8A8D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
+		4F22538E25B49D0300ED8A8D /* customosc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = customosc.h; sourceTree = "<group>"; };
+		4F22538F25B49D0300ED8A8D /* customosc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = customosc.c; sourceTree = "<group>"; };
 		4F35535525AF724F001D8412 /* SpectrumPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumPopupView.swift; sourceTree = "<group>"; };
 		4F35535825AFC877001D8412 /* CircleCursorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCursorView.swift; sourceTree = "<group>"; };
 		4F5E03C125AD455C00113186 /* track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = track.mp3; sourceTree = "<group>"; };
 		4F6E705125AE830F003D9894 /* MorphableShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphableShape.swift; sourceTree = "<group>"; };
 		4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTViewWrapper.swift; sourceTree = "<group>"; };
+		4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeView.swift; sourceTree = "<group>"; };
 		4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualizerPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPlaygroundApp.swift; sourceTree = "<group>"; };
 		4FD1E42A259BFEF20024E8C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,6 +56,13 @@
 		4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myFFTView.swift; sourceTree = "<group>"; };
 		4FD1E43F259C03700024E8C8 /* Conductor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conductor.swift; sourceTree = "<group>"; };
 		4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
+		FAAEBDF625BA9202009869A6 /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
+		FAD8684325BF58BA002BE40B /* ColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelpers.swift; sourceTree = "<group>"; };
+		FAD8684D25BF7106002BE40B /* WavetableExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableExampleView.swift; sourceTree = "<group>"; };
+		FAD8685325BF8197002BE40B /* AmplitudeExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeExampleView.swift; sourceTree = "<group>"; };
+		FAD8685825BF8272002BE40B /* FFTExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTExampleView.swift; sourceTree = "<group>"; };
+		FAD8685E25BF838C002BE40B /* SpectrogramExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramExampleView.swift; sourceTree = "<group>"; };
+		FAD8686425BF8662002BE40B /* SpectrumExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +78,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F1B20BC25B75ADD00635143 /* CustomOscillator */ = {
+			isa = PBXGroup;
+			children = (
+				4F22538E25B49D0300ED8A8D /* customosc.h */,
+				4F22538F25B49D0300ED8A8D /* customosc.c */,
+				4F22538625B48D1D00ED8A8D /* CustomOscillator.swift */,
+				4F22538A25B4932200ED8A8D /* CustomOscillatorDSP.mm */,
+			);
+			path = CustomOscillator;
+			sourceTree = "<group>";
+		};
 		4FD1E41C259BFEF20024E8C8 = {
 			isa = PBXGroup;
 			children = (
@@ -76,12 +112,9 @@
 				4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */,
 				4FD1E43F259C03700024E8C8 /* Conductor.swift */,
 				4FD1E42A259BFEF20024E8C8 /* ContentView.swift */,
-				4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */,
-				4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */,
-				4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */,
-				4F35535825AFC877001D8412 /* CircleCursorView.swift */,
-				4F35535525AF724F001D8412 /* SpectrumPopupView.swift */,
-				4F6E705125AE830F003D9894 /* MorphableShape.swift */,
+				FAD8686A25BF89AD002BE40B /* Views */,
+				FAD8686925BF8997002BE40B /* Helpers */,
+				4F1B20BC25B75ADD00635143 /* CustomOscillator */,
 				4FD1E42C259BFEF30024E8C8 /* Assets.xcassets */,
 				4FD1E431259BFEF30024E8C8 /* Info.plist */,
 				4FD1E42E259BFEF30024E8C8 /* Preview Content */,
@@ -95,6 +128,75 @@
 				4FD1E42F259BFEF30024E8C8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FAD8684C25BF70EB002BE40B /* WavetableView */ = {
+			isa = PBXGroup;
+			children = (
+				4F1B20BE25B75B7C00635143 /* WavetableView.swift */,
+				FAD8684D25BF7106002BE40B /* WavetableExampleView.swift */,
+			);
+			path = WavetableView;
+			sourceTree = "<group>";
+		};
+		FAD8685225BF8172002BE40B /* AmplitudeView */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */,
+				FAD8685325BF8197002BE40B /* AmplitudeExampleView.swift */,
+			);
+			path = AmplitudeView;
+			sourceTree = "<group>";
+		};
+		FAD8685725BF8250002BE40B /* FFTView */ = {
+			isa = PBXGroup;
+			children = (
+				FAD8685825BF8272002BE40B /* FFTExampleView.swift */,
+				4FD1E43C259BFF3E0024E8C8 /* myFFTView.swift */,
+				4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */,
+			);
+			path = FFTView;
+			sourceTree = "<group>";
+		};
+		FAD8685D25BF8376002BE40B /* SpectrogramView */ = {
+			isa = PBXGroup;
+			children = (
+				FAAEBDF625BA9202009869A6 /* SpectrogramView.swift */,
+				FAD8685E25BF838C002BE40B /* SpectrogramExampleView.swift */,
+			);
+			path = SpectrogramView;
+			sourceTree = "<group>";
+		};
+		FAD8686325BF864B002BE40B /* SpectrumView */ = {
+			isa = PBXGroup;
+			children = (
+				FAD8686425BF8662002BE40B /* SpectrumExampleView.swift */,
+				4FEDB5DE25A128F700755BE5 /* SpectrumView.swift */,
+				4F35535525AF724F001D8412 /* SpectrumPopupView.swift */,
+				4F35535825AFC877001D8412 /* CircleCursorView.swift */,
+			);
+			path = SpectrumView;
+			sourceTree = "<group>";
+		};
+		FAD8686925BF8997002BE40B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4F6E705125AE830F003D9894 /* MorphableShape.swift */,
+				FAD8684325BF58BA002BE40B /* ColorHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FAD8686A25BF89AD002BE40B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAD8685225BF8172002BE40B /* AmplitudeView */,
+				FAD8685725BF8250002BE40B /* FFTView */,
+				FAD8685D25BF8376002BE40B /* SpectrogramView */,
+				FAD8684C25BF70EB002BE40B /* WavetableView */,
+				FAD8686325BF864B002BE40B /* SpectrumView */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +234,7 @@
 				TargetAttributes = {
 					4FD1E424259BFEF20024E8C8 = {
 						CreatedOnToolsVersion = 12.2;
+						LastSwiftMigration = 1230;
 					};
 				};
 			};
@@ -177,13 +280,25 @@
 			files = (
 				4FD1E43D259BFF3E0024E8C8 /* myFFTView.swift in Sources */,
 				4F35535925AFC877001D8412 /* CircleCursorView.swift in Sources */,
+				FAD8686525BF8662002BE40B /* SpectrumExampleView.swift in Sources */,
+				4F1B20BF25B75B7C00635143 /* WavetableView.swift in Sources */,
 				4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */,
+				4FAB1D9725B28283005D0D15 /* AmplitudeView.swift in Sources */,
+				FAD8685925BF8272002BE40B /* FFTExampleView.swift in Sources */,
+				4F22539025B49D0300ED8A8D /* customosc.c in Sources */,
 				4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */,
+				4F22538725B48D1D00ED8A8D /* CustomOscillator.swift in Sources */,
+				FAD8685F25BF838C002BE40B /* SpectrogramExampleView.swift in Sources */,
 				4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */,
+				4F22538B25B4932200ED8A8D /* CustomOscillatorDSP.mm in Sources */,
+				FAAEBDF725BA9202009869A6 /* SpectrogramView.swift in Sources */,
 				4F35535625AF724F001D8412 /* SpectrumPopupView.swift in Sources */,
 				4F6E705225AE830F003D9894 /* MorphableShape.swift in Sources */,
 				4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */,
+				FAD8684E25BF7106002BE40B /* WavetableExampleView.swift in Sources */,
 				4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */,
+				FAD8684425BF58BA002BE40B /* ColorHelpers.swift in Sources */,
+				FAD8685425BF8197002BE40B /* AmplitudeExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +426,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"VisualizerPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = L2FL95P32D;
@@ -323,6 +439,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MattPfeiffer.VisualizerPlayground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -333,6 +450,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"VisualizerPlayground/Preview Content\"";
 				DEVELOPMENT_TEAM = L2FL95P32D;
