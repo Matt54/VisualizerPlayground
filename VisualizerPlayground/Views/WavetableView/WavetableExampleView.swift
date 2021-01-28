@@ -17,7 +17,7 @@ struct WavetableExampleView: View{
                 .foregroundColor(.white)
         }
         .background(Color.black)
-        .navigationBarTitle(Text("WavetableView Example"), displayMode: .inline)
+        .navigationBarTitle(Text("Wavetable View"), displayMode: .inline)
     }
 }
 

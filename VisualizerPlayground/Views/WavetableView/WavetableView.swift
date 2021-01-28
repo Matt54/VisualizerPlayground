@@ -18,50 +18,6 @@ class WavetableModel: ObservableObject {
     }
 }
 
-/*struct WavetableView: View {
-    @StateObject var wavetableModel = WavetableModel()
-    var node: DynamicOscillator
-    
-    init(_ node: DynamicOscillator) {
-        self.node = node
-    }
-    
-    var body: some View {
-        var mappedIndexedDoubles : [Double] = []
-        mappedIndexedDoubles.append(0.0)
-        mappedIndexedDoubles.append(0.5)
-        for i in 0..<wavetableModel.floats.count {
-            let mappedX = map(n: Double(i), start1: 0.0, stop1: Double(wavetableModel.floats.count), start2: 0.0, stop2: 1.0)
-            let mappedY = map(n: Double(wavetableModel.floats[i]), start1: -1.0, stop1: 1.0, start2: 0.99, stop2: 0.01)
-            
-            mappedIndexedDoubles.append(mappedX)
-            mappedIndexedDoubles.append(mappedY)
-        }
-        mappedIndexedDoubles.append(1.0)
-        mappedIndexedDoubles.append(0.5)
-        mappedIndexedDoubles.append(0.0)
-        mappedIndexedDoubles.append(0.5)
-        
-        return ZStack {
-            Color.black
-            MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
-                .fill(Color.green.opacity(0.8))
-            MorphableShape(controlPoints: AnimatableVector(with: mappedIndexedDoubles))
-                .stroke(Color.white,lineWidth: 3)
-        }
-        .drawingGroup()
-        .onAppear {
-            wavetableModel.updateNode(node)
-        }
-    }
-}*/
-
-struct WavetableView_Previews: PreviewProvider {
-    static var previews: some View {
-        WavetableView(node: DynamicOscillator())
-    }
-}
-
 struct WavetableView: View {
     @StateObject var wavetableModel = WavetableModel()
     @State var strokeColor : Color = Color.white
@@ -103,5 +59,11 @@ struct WavetableView: View {
             }
             .stroke(strokeColor,lineWidth: 3)
         }
+    }
+}
+
+struct WavetableView_Previews: PreviewProvider {
+    static var previews: some View {
+        WavetableView(node: DynamicOscillator())
     }
 }

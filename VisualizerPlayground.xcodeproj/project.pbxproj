@@ -15,6 +15,7 @@
 		4F35535925AFC877001D8412 /* CircleCursorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35535825AFC877001D8412 /* CircleCursorView.swift */; };
 		4F5E03C225AD455C00113186 /* track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F5E03C125AD455C00113186 /* track.mp3 */; };
 		4F6E705225AE830F003D9894 /* MorphableShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E705125AE830F003D9894 /* MorphableShape.swift */; };
+		4F90FD1925C3814C00E5C139 /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F90FD1825C3814C00E5C139 /* TapView.swift */; };
 		4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */; };
 		4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1F0C925A26AA300EE1C00 /* AudioKitUI */; };
 		4FAB1D9725B28283005D0D15 /* AmplitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F19E0C225C05497005D6EB8 /* AudioKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKit; path = ../../../../../../Documents/GitHub/AudioKit; sourceTree = "<group>"; };
 		4F1B20BE25B75B7C00635143 /* WavetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableView.swift; sourceTree = "<group>"; };
 		4F22538625B48D1D00ED8A8D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F22538A25B4932200ED8A8D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
@@ -45,6 +47,7 @@
 		4F35535825AFC877001D8412 /* CircleCursorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCursorView.swift; sourceTree = "<group>"; };
 		4F5E03C125AD455C00113186 /* track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = track.mp3; sourceTree = "<group>"; };
 		4F6E705125AE830F003D9894 /* MorphableShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphableShape.swift; sourceTree = "<group>"; };
+		4F90FD1825C3814C00E5C139 /* TapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapView.swift; sourceTree = "<group>"; };
 		4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTViewWrapper.swift; sourceTree = "<group>"; };
 		4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeView.swift; sourceTree = "<group>"; };
 		4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualizerPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +95,7 @@
 		4FD1E41C259BFEF20024E8C8 = {
 			isa = PBXGroup;
 			children = (
+				4F19E0C225C05497005D6EB8 /* AudioKit */,
 				4FD1E427259BFEF20024E8C8 /* VisualizerPlayground */,
 				4FD1E426259BFEF20024E8C8 /* Products */,
 			);
@@ -195,6 +199,7 @@
 				FAD8685D25BF8376002BE40B /* SpectrogramView */,
 				FAD8684C25BF70EB002BE40B /* WavetableView */,
 				FAD8686325BF864B002BE40B /* SpectrumView */,
+				4F90FD1825C3814C00E5C139 /* TapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 				4F22538725B48D1D00ED8A8D /* CustomOscillator.swift in Sources */,
 				FAD8685F25BF838C002BE40B /* SpectrogramExampleView.swift in Sources */,
 				4FEDB5DF25A128F700755BE5 /* SpectrumView.swift in Sources */,
+				4F90FD1925C3814C00E5C139 /* TapView.swift in Sources */,
 				4F22538B25B4932200ED8A8D /* CustomOscillatorDSP.mm in Sources */,
 				FAAEBDF725BA9202009869A6 /* SpectrogramView.swift in Sources */,
 				4F35535625AF724F001D8412 /* SpectrumPopupView.swift in Sources */,

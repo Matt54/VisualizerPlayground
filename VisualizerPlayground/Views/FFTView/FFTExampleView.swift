@@ -19,23 +19,26 @@ struct FFTExampleView: View{
                                               Gradient(colors: [Color.init(hex: "d902ee"), Color.init(hex: "F4AF1B"), Color.init(hex: "F2BC94")])]
     
     var body: some View{
-        VStack(spacing: 0){
-            Text("Variation: " + variationType.rawValue)
-                .font(.largeTitle)
-                .foregroundColor(.white)
-            
-            if variationType == .defaultFFT{
-                FFTView(conductor.filter)
-            } else if variationType == .noPadding {
-                FFTView(conductor.filter, linearGradient: LinearGradient(gradient: colorGradients[1], startPoint: .top, endPoint: .center), paddingFraction: 0.0)
-            } else if variationType == .moreBars {
-                FFTView(conductor.filter, numberOfBars: 100)
-            } else {
-                FFTView(conductor.filter, linearGradient: LinearGradient(gradient: colorGradients[2], startPoint: .top, endPoint: .center), includeCaps: false)
+        ZStack{
+            VStack(spacing: 0){
+                Text("Variation: " + variationType.rawValue)
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                
+                if variationType == .defaultFFT{
+                    FFTView(conductor.filter)
+                } else if variationType == .noPadding {
+                    FFTView(conductor.filter, linearGradient: LinearGradient(gradient: colorGradients[1], startPoint: .top, endPoint: .center), paddingFraction: 0.0)
+                } else if variationType == .moreBars {
+                    FFTView(conductor.filter, numberOfBars: 100)
+                } else {
+                    FFTView(conductor.filter, linearGradient: LinearGradient(gradient: colorGradients[2], startPoint: .top, endPoint: .center), includeCaps: false)
+                }
             }
+            TapView()
         }
         .background(Color.black)
-        .navigationBarTitle(Text("FFTView Example"), displayMode: .inline)
+        .navigationBarTitle(Text("FFT View"), displayMode: .inline)
         .onTapGesture {
             if variationType == .defaultFFT {
                 variationType = .noPadding
@@ -47,6 +50,7 @@ struct FFTExampleView: View{
                 variationType = .defaultFFT
             }
         }
+            
     }
     
     enum VariationType : String {

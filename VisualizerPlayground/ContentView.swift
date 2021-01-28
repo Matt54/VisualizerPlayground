@@ -11,23 +11,28 @@ struct ContentView: View {
     var body: some View {
         return NavigationView{
             List{
-                NavigationLink(destination: WavetableExampleView()){
-                    Text("WavetableView Example")
-                }
-                NavigationLink(destination: AmplitudeExampleView()){
-                    Text("AmplitudeView Example")
-                }
                 NavigationLink(destination: FFTExampleView()){
-                    Text("FFTView Example")
-                }
-                NavigationLink(destination: SpectrogramExampleView()){
-                    Text("SpectrogramView Example")
+                    Image(systemName: "chart.bar.xaxis")
+                    Text("FFT View")
                 }
                 NavigationLink(destination: SpectrumExampleView()){
-                    Text("SpectrumView Example")
+                    Image(systemName: "wave.3.right.circle")
+                    Text("Spectrum View")
+                }
+                NavigationLink(destination: SpectrogramExampleView()){
+                    Image(systemName: "square.stack.3d.down.right")
+                    Text("Spectrogram View")
+                }
+                NavigationLink(destination: AmplitudeExampleView()){
+                    Image(systemName: "speaker.wave.3")
+                    Text("Amplitude View")
+                }
+                NavigationLink(destination: WavetableExampleView()){
+                    Image(systemName: "waveform.path.ecg.rectangle")
+                    Text("Wavetable View")
                 }
             }
-            .navigationBarTitle("Visualizer Playground")
+            .navigationBarTitle("AudioKitUI")
         }
     }
 }
