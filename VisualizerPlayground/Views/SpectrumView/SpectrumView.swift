@@ -5,7 +5,7 @@ import SwiftUI
 
 // MARK: SpectrumModel
 class SpectrumModel: ObservableObject {
-    static let numberOfPoints = 210
+    static let numberOfPoints = 256
     
     @Published var amplitudes: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
     @Published var frequencies: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
@@ -73,7 +73,7 @@ class SpectrumModel: ObservableObject {
         for i in 0..<real.count {
             
             // I don't love doing this for every element
-            let frequencyForBin = sampleRate * 0.5 * Double(i*2) / Double(FFT_SIZE)
+            let frequencyForBin = sampleRate * 0.5 * Double(i*2) / Double(real.count * 2)
             
             var squared = real[i] * real[i] + imaginary[i] * imaginary[i]
             
@@ -86,7 +86,7 @@ class SpectrumModel: ObservableObject {
                     maxSquared = squared
                     frequencyChosen = frequencyForBin
                 }
-                if i % 8 != 0 {
+                if i % 16 != 0 {
                     // take the greatest 1 in every 8 points when > 10k Hz.
                     continue
                 } else {
@@ -99,14 +99,15 @@ class SpectrumModel: ObservableObject {
                     maxSquared = squared
                     frequencyChosen = frequencyForBin
                 }
-                if i % 4 != 0 {
+                if i % 8 != 0 {
                     // take the greatest 1 in every 4 points when > 1k Hz.
                     continue
                 } else {
                     squared = maxSquared
                     maxSquared = 0.0
                 }
-            } else {
+            }
+            else {
                 frequencyChosen = frequencyForBin
             }
             

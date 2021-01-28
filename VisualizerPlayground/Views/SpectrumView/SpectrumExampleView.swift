@@ -39,7 +39,7 @@ struct SpectrumExampleView: View{
             }
         }
         .background(Color.black)
-        .navigationBarTitle(Text("SpectrumView Example"), displayMode: .inline)
+        .navigationBarTitle(Text("Spectrum View"), displayMode: .inline)
     }
     
     enum VariationType : String {

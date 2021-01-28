@@ -112,6 +112,7 @@ struct AmplitudeView: View {
                 
                 if(index != numberOfBlackSegments + 1){
                     Rectangle()
+                        .fill(Color.black)
                         .frame(height: spaceHeight)
                 }
                 addOpacityRectangle(height: solidHeight, index: index , n: numberOfBlackSegments)
@@ -125,6 +126,7 @@ struct AmplitudeView: View {
         let opacity = amplitudeModel.amplitude > Double(index - 1) / Double(n+1) ? 0.0 : 1.0
         
         return Rectangle()
+            .fill(Color.black)
             .frame(height: height)
             .opacity(opacity)
             .animation(.linear(duration: 0.05))

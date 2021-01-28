@@ -12,7 +12,7 @@ struct SpectrogramExampleView: View{
     var body: some View{
         SpectrogramView(node: conductor.outputLimiter)
         .background(Color.black)
-        .navigationBarTitle(Text("SpectrogramView Example"), displayMode: .inline)
+        .navigationBarTitle(Text("Spectrogram View"), displayMode: .inline)
     }
 }
 
