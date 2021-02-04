@@ -38,6 +38,7 @@ class SpectrumModel: ObservableObject {
                 }
             }
             nodeTap.isNormalized = false
+            nodeTap.zeroPaddingFactor = 1
             nodeTap.start()
         }
     }
@@ -179,6 +180,9 @@ struct SpectrumView: View {
     @State var popupOpacity: Double = 0.0
     @State var cursorDisplayed: Bool = false
     
+    @State var shouldAnalyzeTouch: Bool = true
+    @State var shouldDisplayAxisLabels: Bool = true
+    
     public var body: some View {
         GeometryReader{ geometry in
             createGraphView(width: geometry.size.width, height: geometry.size.height)
@@ -216,7 +220,7 @@ struct SpectrumView: View {
                         }
                 )
             
-            if cursorDisplayed {
+            if cursorDisplayed && shouldAnalyzeTouch {
                 ZStack{
                     createCrossLines(width: geometry.size.width, height: geometry.size.height)
                     
@@ -271,8 +275,8 @@ struct SpectrumView: View {
                 createSpectrumShape(width: width, height: height)
             }
             
-            HorizontalAxis(minX: spectrum.minFreq, maxX: spectrum.maxFreq, isLogarithmicScale: true)
-            VerticalAxis(minY: $spectrum.bottomAmp, maxY: $spectrum.topAmp)
+            HorizontalAxis(minX: spectrum.minFreq, maxX: spectrum.maxFreq, isLogarithmicScale: true, shouldDisplayAxisLabel: shouldDisplayAxisLabels)
+            VerticalAxis(minY: $spectrum.bottomAmp, maxY: $spectrum.topAmp, shouldDisplayAxisLabel: shouldDisplayAxisLabels)
         }
     }
     
@@ -389,6 +393,7 @@ struct HorizontalAxis: View {
     @State var minX : Double = 30
     @State var maxX : Double = 20_000
     @State var isLogarithmicScale: Bool = true
+    @State var shouldDisplayAxisLabel: Bool = true
     
     public var body: some View {
         
@@ -416,10 +421,12 @@ struct HorizontalAxis: View {
                     }
                     .stroke(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8))
 
-                    Text(verticalLineLabels[i])
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .position(x: verticalLineXLocationsMapped[i] * geo.size.width + geo.size.width * 0.02, y: geo.size.height * 0.03)
+                    if shouldDisplayAxisLabel {
+                        Text(verticalLineLabels[i])
+                            .font(.footnote)
+                            .foregroundColor(.white)
+                            .position(x: verticalLineXLocationsMapped[i] * geo.size.width + geo.size.width * 0.02, y: geo.size.height * 0.03)
+                    }
                 }
             }
         }
@@ -431,6 +438,7 @@ struct VerticalAxis: View {
     
     @Binding var minY : CGFloat
     @Binding var maxY : CGFloat
+    @State var shouldDisplayAxisLabel: Bool = true
     
     public var body: some View {
         
@@ -459,12 +467,14 @@ struct VerticalAxis: View {
                             .stroke(Color(red: 1.0, green: 1.0, blue: 1.0, opacity: 0.4))
                             .animation(.easeInOut(duration: 0.2))
                         
-                        let labelString = String(Int(horizontalLineYLocations[i]))
-                        Text(labelString)
-                            .position(x: geo.size.width * 0.03, y: horizontalLineYLocationsMapped[i] * geo.size.height - geo.size.height * 0.03)
-                            .animation(.easeInOut(duration: 0.2))
-                            .font(.footnote)
-                            .foregroundColor(.white)
+                        if shouldDisplayAxisLabel {
+                            let labelString = String(Int(horizontalLineYLocations[i]))
+                            Text(labelString)
+                                .position(x: geo.size.width * 0.03, y: horizontalLineYLocationsMapped[i] * geo.size.height - geo.size.height * 0.03)
+                                .animation(.easeInOut(duration: 0.2))
+                                .font(.footnote)
+                                .foregroundColor(.white)
+                        }
                     }
                 }
             }

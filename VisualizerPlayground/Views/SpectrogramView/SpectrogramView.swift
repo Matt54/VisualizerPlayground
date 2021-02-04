@@ -59,6 +59,7 @@ class SpectrogramModel: ObservableObject {
                 }
             }
             nodeTap.isNormalized = false
+            nodeTap.zeroPaddingFactor = 1
             nodeTap.start()
         }
     }
