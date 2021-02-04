@@ -18,6 +18,8 @@
 		4F90FD1925C3814C00E5C139 /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F90FD1825C3814C00E5C139 /* TapView.swift */; };
 		4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */; };
 		4FA1F0CA25A26AA300EE1C00 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1F0C925A26AA300EE1C00 /* AudioKitUI */; };
+		4FAB0CB825CB89730004B841 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB0CB725CB89730004B841 /* FilterView.swift */; };
+		4FAB0CBB25CB89B00004B841 /* FilterExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB0CBA25CB89B00004B841 /* FilterExampleView.swift */; };
 		4FAB1D9725B28283005D0D15 /* AmplitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */; };
 		4FD1E429259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */; };
 		4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1E42A259BFEF20024E8C8 /* ContentView.swift */; };
@@ -49,6 +51,8 @@
 		4F6E705125AE830F003D9894 /* MorphableShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphableShape.swift; sourceTree = "<group>"; };
 		4F90FD1825C3814C00E5C139 /* TapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapView.swift; sourceTree = "<group>"; };
 		4F98701925A3C1BF0057E779 /* FFTViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTViewWrapper.swift; sourceTree = "<group>"; };
+		4FAB0CB725CB89730004B841 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterView.swift; path = ../../../../../../../../../Documents/FilterView.swift; sourceTree = "<group>"; };
+		4FAB0CBA25CB89B00004B841 /* FilterExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterExampleView.swift; path = ../../../../../../../../../Documents/FilterExampleView.swift; sourceTree = "<group>"; };
 		4FAB1D9625B28283005D0D15 /* AmplitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeView.swift; sourceTree = "<group>"; };
 		4FD1E425259BFEF20024E8C8 /* VisualizerPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualizerPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD1E428259BFEF20024E8C8 /* VisualizerPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPlaygroundApp.swift; sourceTree = "<group>"; };
@@ -90,6 +94,15 @@
 				4F22538A25B4932200ED8A8D /* CustomOscillatorDSP.mm */,
 			);
 			path = CustomOscillator;
+			sourceTree = "<group>";
+		};
+		4FAB0CB625CB895C0004B841 /* FilterView */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB0CB725CB89730004B841 /* FilterView.swift */,
+				4FAB0CBA25CB89B00004B841 /* FilterExampleView.swift */,
+			);
+			path = FilterView;
 			sourceTree = "<group>";
 		};
 		4FD1E41C259BFEF20024E8C8 = {
@@ -194,6 +207,7 @@
 		FAD8686A25BF89AD002BE40B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4FAB0CB625CB895C0004B841 /* FilterView */,
 				FAD8685225BF8172002BE40B /* AmplitudeView */,
 				FAD8685725BF8250002BE40B /* FFTView */,
 				FAD8685D25BF8376002BE40B /* SpectrogramView */,
@@ -289,6 +303,7 @@
 				4F1B20BF25B75B7C00635143 /* WavetableView.swift in Sources */,
 				4F98701A25A3C1BF0057E779 /* FFTViewWrapper.swift in Sources */,
 				4FAB1D9725B28283005D0D15 /* AmplitudeView.swift in Sources */,
+				4FAB0CB825CB89730004B841 /* FilterView.swift in Sources */,
 				FAD8685925BF8272002BE40B /* FFTExampleView.swift in Sources */,
 				4F22539025B49D0300ED8A8D /* customosc.c in Sources */,
 				4FD1E42B259BFEF20024E8C8 /* ContentView.swift in Sources */,
@@ -305,6 +320,7 @@
 				4FD1E440259C03700024E8C8 /* Conductor.swift in Sources */,
 				FAD8684425BF58BA002BE40B /* ColorHelpers.swift in Sources */,
 				FAD8685425BF8197002BE40B /* AmplitudeExampleView.swift in Sources */,
+				4FAB0CBB25CB89B00004B841 /* FilterExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

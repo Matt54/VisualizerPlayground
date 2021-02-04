@@ -19,6 +19,10 @@ struct ContentView: View {
                     Image(systemName: "wave.3.right.circle")
                     Text("Spectrum View")
                 }
+                NavigationLink(destination: FilterExampleView()){
+                    Image(systemName: "f.circle")
+                    Text("Filter View")
+                }
                 NavigationLink(destination: SpectrogramExampleView()){
                     Image(systemName: "square.stack.3d.down.right")
                     Text("Spectrogram View")

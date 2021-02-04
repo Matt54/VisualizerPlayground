@@ -15,7 +15,7 @@ class Conductor : ObservableObject{
     /// Single shared data model
     static let shared = Conductor()
     
-    var testInputType : TestInputType = .player {
+    var testInputType : TestInputType = .oscillator {
         didSet{
             setupAudioType()
         }
